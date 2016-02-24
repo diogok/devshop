@@ -1,0 +1,10 @@
+app:
+  build: .
+  working_dir: "/app"
+  environment:
+    GOPATH: /app
+  volumes:
+    - ".:/app:rw"
+  ports:
+    - 8080:8080
+  command: "/app/run.sh dev"
