@@ -49,7 +49,7 @@ func TestDevelopers(t *testing.T) {
 		t.Error("Listing developers error")
 	} else if devs == nil {
 		t.Error("Devs is nil")
-	} else if len(devs) != 10 {
+	} else if len(devs) != 5 {
 		t.Error("Wrong number of devs")
 	} else {
 		devs, err = developers("diogok",0)

@@ -1,4 +1,6 @@
 *.swp
 /data
 /src/github.com
+/src/golang.org
 /pkg
+.token

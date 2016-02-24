@@ -4,19 +4,24 @@ import (
 	"log"
 	"net/http"
 	"fmt"
-	"flag"
+	"os"
 )
 
 func main() {
-	var port = flag.Int("port",8080,"Port to bind server. Default to 8080.")
-	flag.Parse()
+	sport := os.Getenv("PORT")
+	var port string
+	if len(sport) > 2 {
+		port = sport
+	} else {
+		port = "8080"
+	}
 
-	log.Printf("Binding at 0.0.0.0:%d", *port)
+	log.Printf("Binding at 0.0.0.0:%s", port)
 
 	http.Handle("/", http.FileServer(http.Dir("public")))
 
 	routes()
 
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d",*port), nil))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s",port), nil))
 
 }

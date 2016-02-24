@@ -2,7 +2,9 @@ package main
 
 import (
   "github.com/google/go-github/github"
+	"golang.org/x/oauth2"
 	"math"
+	"os"
 )
 
 type Developer struct {
@@ -23,8 +25,21 @@ type Repository struct {
 
 type Repositories []Repository
 
+
+func NewClient() *github.Client {
+	token := os.Getenv("GITHUB_TOKEN")
+
+	if len(token) > 1 {
+		ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken:token})
+		tc := oauth2.NewClient(oauth2.NoContext, ts)
+		return github.NewClient(tc)
+	} else {
+		return github.NewClient(nil)
+	}
+}
+
 func repositories(user string)  (Repositories,error) {
-	client := github.NewClient(nil)
+	client := NewClient()
 
 	opts := &github.RepositoryListOptions{
 		ListOptions: github.ListOptions{PerPage: 99, Page: 0},
@@ -58,10 +73,10 @@ func calcCost(repos Repositories) int {
 }
 
 func developers(query string, page int) (Developers, error) {
-	client := github.NewClient(nil)
+	client := NewClient()
 
 	opts := &github.SearchOptions{
-		ListOptions: github.ListOptions{PerPage: 10, Page: page},
+		ListOptions: github.ListOptions{PerPage: 5, Page: page},
 	}
 
 	rdevs, _,err := client.Search.Users(query,opts)

@@ -4,6 +4,10 @@ if [ "$1" = "dev" ];
 then
   while :
   do
+    if [ -e ".token"]; 
+    then
+      export GITHUB_TOKEN=$(cat .token)
+    fi
     go run $(ls src/*.go) &
     pid=$!
     sleep 10
