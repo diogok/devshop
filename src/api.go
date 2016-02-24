@@ -3,6 +3,8 @@ package main
 import (
 	"net/http"
 	"encoding/json"
+//	"fmt"
+	"strconv"
 //	"github.com/syndtr/goleveldb/leveldb"
 )
 
@@ -11,7 +13,19 @@ func echo(r *http.Request) (interface{}, error) {
 }
 
 func developers_api(r *http.Request) (interface{}, error) {
-	devs, err := developers("*",0)
+	rPage := r.URL.Query().Get("page")
+	page := 1
+	if len(rPage) >= 1 {
+		rrPage,err := strconv.Atoi(rPage)
+		if err == nil {
+			page = rrPage
+		}
+	}
+	query := r.URL.Query().Get("query")
+	if len(query) <1 {
+		query = "*"
+	}
+	devs, err := developers(query,page)
 	return devs, err
 }
 
