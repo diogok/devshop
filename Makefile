@@ -13,7 +13,7 @@ deps:
 	docker-compose run app sh -c "cat /app/src/*.go | grep 'github.com\\/[^\"]*' -o | xargs go get"
 
 tests:
-	docker-compose run app go test src/*.go
+	docker-compose run app go test -v src/*.go
 
 test: tests
 
