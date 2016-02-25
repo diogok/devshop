@@ -3,9 +3,7 @@ package main
 import (
 	"net/http"
 	"encoding/json"
-//	"fmt"
 	"strconv"
-//	"github.com/syndtr/goleveldb/leveldb"
 )
 
 func echo(r *http.Request) (interface{}, error) {
