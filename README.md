@@ -6,7 +6,7 @@ Dev shop é uma aplicação de teste e aprendizagem.
 
 Utiliza uma API web em [Go](http://golang.org), persistencia com [LevelDB](https://github.com/google/leveldb), e front-end com [VUEJS](vuejs.org) e [Material Design Lite](http://getmdl.io).
 
-[Veja ao vivo](http://104.236.203.153).
+[Veja ao vivo](http://104.236.203.153:8080).
 
 ## Desenvolvimento
 
