@@ -59,6 +59,20 @@ func cart_api(r *http.Request) (interface{}, error) {
 	}
 }
 
+func purchase_api(r *http.Request) (interface{},error) {
+	if r.Method == "GET" {
+		return ListPurchases(), nil
+	} else if r.Method == "POST" {
+		Purchase()
+		return ListPurchases(), nil
+	} else if(r.Method == "DELETE") {
+		ClearPurchases()
+		return ListPurchases(), nil
+	} else {
+		return nil, errors.New("Bad request")
+	}
+}
+
 func api(route string, handler func(*http.Request) (res interface{},err error)) {
 	http.HandleFunc(route,func(w http.ResponseWriter, r *http.Request){
 		res, err := handler(r)
@@ -75,4 +89,5 @@ func routes() {
 	api("/echo",echo)
 	api("/developers",developers_api)
 	api("/cart",cart_api)
+	api("/purchase",purchase_api)
 }

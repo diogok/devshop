@@ -42,4 +42,39 @@ func TestCart(t *testing.T) {
 	if devs2[1].Login != "diogokid" {
 		t.Error("Bad cart listing")
 	}
+
+	DelFromCart("diogokid")
+	devs3 := ListCart()
+	if len(devs3) != 1 {
+		t.Error("Cant del from cart")
+	}
 }
+
+func TestPurchase(t *testing.T) {
+	ClearCart()
+	ClearPurchases()
+	purchs0 := ListPurchases()
+	if len(purchs0) !=0 {
+		t.Error("Bad clear purchases")
+	}
+
+	dev0 := Developer{Login: "diogok"}
+	dev1 := Developer{Login: "diogokid"}
+	AddToCart(dev0)
+	AddToCart(dev1)
+
+	Purchase()
+	cart0 := ListCart()
+	if len(cart0) != 0 {
+		t.Error("Cart not empty after purchase")
+	}
+
+	purchs1 := ListPurchases()
+	if len(purchs1) != 1 {
+		t.Error("Purchase not saved")
+	}
+	if purchs1[0][0].Login != "diogok" {
+		t.Error("Purchase not saved properly")
+	}
+}
+

@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"encoding/gob"
 	"fmt"
+	"time"
 )
 
 var db *leveldb.DB
@@ -83,3 +84,56 @@ func ClearCart() {
 	}
 }
 
+func Purchase() {
+	db := conn()
+	cart := ListCart()
+	ClearCart()
+
+	timestamp := time.Now().Unix()
+	key := fmt.Sprintf("purchase-%d",timestamp)
+	bkey := bytes.NewBufferString(key)
+
+	var blob bytes.Buffer
+	enc := gob.NewEncoder(&blob)
+	_ = enc.Encode(cart)
+
+	err := db.Put(bkey.Bytes(),blob.Bytes(),nil)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func ListPurchases() []Developers {
+	db := conn()
+	purchases := []Developers{}
+	iter := db.NewIterator(util.BytesPrefix([]byte("purchase-")), nil)
+	for iter.Next() {
+		var devs Developers
+		val := iter.Value()
+		blob := bytes.NewReader(val)
+		dec := gob.NewDecoder(blob)
+		_ = dec.Decode(&devs)
+		purchases = append(purchases,devs)
+	}
+	iter.Release()
+	err := iter.Error()
+	if err != nil {
+		panic(err)
+	}
+	return purchases
+}
+
+func ClearPurchases() {
+	db := conn()
+	var keys []string
+	iter := db.NewIterator(util.BytesPrefix([]byte("purchase-")), nil)
+	for iter.Next() {
+		key := string(iter.Key())
+		keys = append(keys,key)
+	}
+	iter.Release()
+	for _, key := range keys {
+		bkey := bytes.NewBufferString(key)
+		db.Delete(bkey.Bytes(),nil)
+	}
+}
