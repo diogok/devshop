@@ -3,7 +3,16 @@ function vue_cart() {
   return Vue.extend({
       template:"#cart"
       ,methods: {
-        rm: function(login) {
+        purchase: function(){
+          loading();
+          superagent
+            .post("/purchase")
+            .end(function(e,r){
+              unloading();
+              location.hash='!/purchases'
+            })
+        }
+        ,rm: function(login) {
           loading();
           var that=this;
           superagent

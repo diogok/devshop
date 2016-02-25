@@ -15,6 +15,7 @@
   <script src="https://cdn.jsdelivr.net/superagent/0.18.0/superagent.min.js" type="text/javascript"></script>
 
   <script src="developers.js" type="text/javascript"></script>
+  <script src="purchases.js" type="text/javascript"></script>
   <script src="cart.js" type="text/javascript"></script>
   <script src="main.js" type="text/javascript"></script>
 
@@ -151,6 +152,37 @@
             </tbody>
           </table>
           <p>Total: $<span>{{total}}</span></p>
+          <p>
+            <button href="#"
+                    v-on:click="purchase()"
+                    class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored'>
+              Purchase this!
+            </button>
+          </p>
+        </template>
+
+        <template id="purchases">
+          <h2>Your past purchases</h2>
+          <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner loading"></div>
+          <div v-for="cart in purchases">
+            <h3>Purchase {{ $index }}</h3>
+            <table class='mdl-data-table mdl-js-data-table mdl-shadow--2dp'>
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">username</th>
+                  <th class="mdl-data-table__cell--non-numeric">cost</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="dev in cart">
+                  <td class="mdl-data-table__cell--non-numeric">
+                    <a href="https://github.com/{{dev.login}}">{{dev.login}}</a>
+                  </td>
+                  <td>${{dev.cost}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </template>
 
         <router-view></router-view>

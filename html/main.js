@@ -3,6 +3,7 @@ function main() {
   var index = Vue.extend({template:"#index"});
 
   var developers = vue_developers();
+  var purchases = vue_purchases();
   var cart = vue_cart();
 
   var app = Vue.extend({});
@@ -11,6 +12,7 @@ function main() {
   router.map({
      '/':{component: index}
     ,'/cart':{component: cart}
+    ,'/purchases':{component: purchases}
     ,'/developers':{component: developers}
   });
 
