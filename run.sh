@@ -1,13 +1,14 @@
 #!/bin/sh
 
+if [ -e ".token" ]; 
+then
+  export GITHUB_TOKEN=$(cat .token)
+fi
+
 if [ "$1" = "dev" ]; 
 then
   while :
   do
-    if [ -e ".token" ]; 
-    then
-      export GITHUB_TOKEN=$(cat .token)
-    fi
     go run $(ls src/*.go | grep -v test ) &
     pid=$!
     sleep 10

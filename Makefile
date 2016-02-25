@@ -7,7 +7,7 @@ push:
 	docker push diogok/devshop
 
 run-dev:
-	docker-compose run app /app/run.sh dev
+	docker-compose run -p 8080:8080 app /app/run.sh dev
 
 run:
 	docker-compose up
