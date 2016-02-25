@@ -41,6 +41,13 @@ func AddToCart(dev Developer) {
 	}
 }
 
+func DelFromCart(login string) {
+	db := conn()
+	key := fmt.Sprintf("cart-%s",login)
+	bkey := bytes.NewBufferString(key)
+	_ = db.Delete(bkey.Bytes(),nil)
+}
+
 func ListCart() Developers {
 	db := conn()
 	devs := Developers{}
