@@ -8,9 +8,8 @@ import (
 )
 
 type Developer struct {
-	Name *string `json:"name,omitempty"`
-	ID *int `json:"id"`
-	Login *string `json:"login"`
+	ID int `json:"id"`
+	Login string `json:"login"`
 	Cost int `json:"cost"`
 }
 
@@ -86,12 +85,15 @@ func developers(query string, page int) (Developers, error) {
 	} else {
 		devs := Developers{}
 		for _, user := range rdevs.Users {
-			repos,_ := repositories(*user.Login)
+			login := *user.Login
+			id := *user.ID
+
+			repos,_ := repositories(login)
 			cost := calcCost(repos)
+
 			dev := Developer{
-				Login: user.Login,
-				Name: user.Name,
-				ID: user.ID,
+				Login: login,
+				ID: id,
 				Cost: cost,
 			}
 			devs = append(devs,dev)
