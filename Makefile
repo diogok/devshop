@@ -6,6 +6,9 @@ build: deps
 push:
 	docker push diogok/devshop
 
+run-dev:
+	docker-compose run app /app/run.sh dev
+
 run:
 	docker-compose up
 

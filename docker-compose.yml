@@ -7,4 +7,4 @@ app:
     - ".:/app:rw"
   ports:
     - 8080:8080
-  command: "/app/run.sh dev"
+  command: "/app/run.sh"
