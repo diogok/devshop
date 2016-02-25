@@ -1,0 +1,78 @@
+package main
+
+import (
+	"github.com/syndtr/goleveldb/leveldb"
+	"github.com/syndtr/goleveldb/leveldb/util"
+	"os"
+	"bytes"
+	"encoding/gob"
+	"fmt"
+)
+
+var db *leveldb.DB
+
+func conn() *leveldb.DB {
+	if db != nil {
+		return db
+	}
+	path := "../data"
+	rpath := os.Getenv("DATA_DIR")
+	if len(rpath) > 1 {
+		path = rpath
+	}
+	idb, err := leveldb.OpenFile(path, nil)
+	if err != nil {
+		panic(err)
+	}
+	db = idb
+	return idb
+}
+
+func AddToCart(dev Developer) {
+	db := conn()
+	var blob bytes.Buffer
+	enc := gob.NewEncoder(&blob)
+	_ = enc.Encode(dev)
+	key := fmt.Sprintf("cart-%s",dev.Login)
+	bkey := bytes.NewBufferString(key)
+	err := db.Put(bkey.Bytes(),blob.Bytes(),nil)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func ListCart() Developers {
+	db := conn()
+	devs := Developers{}
+	iter := db.NewIterator(util.BytesPrefix([]byte("cart-")), nil)
+	for iter.Next() {
+		var dev Developer
+		val := iter.Value()
+		blob := bytes.NewReader(val)
+		dec := gob.NewDecoder(blob)
+		_ = dec.Decode(&dev)
+		devs = append(devs,dev)
+	}
+	iter.Release()
+	err := iter.Error()
+	if err != nil {
+		panic(err)
+	}
+	return devs
+}
+
+func ClearCart() {
+	db := conn()
+	var keys []string
+	iter := db.NewIterator(util.BytesPrefix([]byte("cart-")), nil)
+	for iter.Next() {
+		key := string(iter.Key())
+		keys = append(keys,key)
+	}
+	iter.Release()
+	for _, key := range keys {
+		bkey := bytes.NewBufferString(key)
+		db.Delete(bkey.Bytes(),nil)
+	}
+}
+
