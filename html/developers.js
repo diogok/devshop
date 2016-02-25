@@ -1,10 +1,6 @@
 
-function main() {
-  var index = Vue.extend({template:"#index"});
-
-  var cart = Vue.extend({template:"#cart"});
-
-  var developers = Vue.extend({
+function vue_developers() {
+  return Vue.extend({
       template:"#developers"
       ,methods: {
         search: function() {
@@ -40,9 +36,17 @@ function main() {
             this.search();
           }
         }
-        ,add: function() {
+        ,add: function(login,cost,id) {
           event.preventDefault();
           loading();
+          console.log(login,cost,id);
+          superagent
+            .post('/cart')
+            .type('form')
+            .send({login:login,cost:cost,id:id})
+            .end(function(err,res){
+                unloading();
+            });
         }
       }
       ,data: function() {
@@ -51,30 +55,4 @@ function main() {
         }
       }
     });
-
-  var app = Vue.extend({});
-  var router = new VueRouter();
-
-  router.map({
-     '/':{component: index}
-    ,'/cart':{component: cart}
-    ,'/developers':{component: developers}
-  });
-
-  router.afterEach(function(){
-      componentHandler.upgradeDom();
-  });
-
-  router.start(app,".inner-content");
-
 }
-
-function loading() {
-  document.querySelector(".loading").classList.add('is-active');
-}
-
-function unloading() {
-  document.querySelector(".loading").classList.remove('is-active');
-}
-
-window.onload = main;

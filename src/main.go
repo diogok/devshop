@@ -18,7 +18,7 @@ func main() {
 
 	log.Printf("Binding at 0.0.0.0:%s", port)
 
-	http.Handle("/", http.FileServer(http.Dir("public")))
+	http.Handle("/", http.FileServer(http.Dir("html")))
 
 	routes()
 
