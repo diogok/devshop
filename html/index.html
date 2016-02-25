@@ -79,14 +79,14 @@
         <template id="developers">
         <div>
           <h2>Search for developers</h2>
-          <form v-on:submit="search()">
+          <form v-on:submit.prevent="search()">
             <fieldset>
               <p>
                 <div class="mdl-textfield mdl-js-textfield">
                   <input class="mdl-textfield__input" type="text" id="query" v-model='query'>
                   <label class="mdl-textfield__label" for="query">Your query</label>
                 </div>
-                <button v-on:click="search()" class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored'>
+                <button v-on:click.prevent="search()" class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored'>
                   <i class="material-icons">search</i>
                 </button>
               </p>
@@ -109,7 +109,7 @@
                 <td>${{dev.cost}}</td>
                 <td class="mdl-data-table__cell--non-numeric">
                   <button href="#"
-                          v-on:click="add(dev.login,dev.cost,dev.id)"
+                          v-on:click.prevent="add(dev.login,dev.cost,dev.id)"
                          class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored'>
                     <i class="material-icons">add_shopping_cart</i>
                   </button>
@@ -118,8 +118,8 @@
             </tbody>
           </table>
           <p>
-            <a href="#" v-on:click="prev()" v-show="hasPrev">Prev</a>
-            <a href="#" v-on:click="next()" v-show="hasNext">Next</a>
+            <a href="#" v-on:click.prevent="prev()" v-show="hasPrev">Prev</a>
+            <a href="#" v-on:click.prevent="next()" v-show="hasNext">Next</a>
           </p>
         </div>
         </template>
@@ -143,7 +143,7 @@
                 <td>${{dev.cost}}</td>
                 <td class="mdl-data-table__cell--non-numeric">
                   <button href="#"
-                          v-on:click="rm(dev.login)"
+                          v-on:click.prevent="rm(dev.login)"
                          class='mdl-button mdl-js-button'>
                     <i class="material-icons">delete</i>
                   </button>
@@ -154,7 +154,7 @@
           <p>Total: $<span>{{total}}</span></p>
           <p>
             <button href="#"
-                    v-on:click="purchase()"
+                    v-on:click.prevent="purchase()"
                     class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored'>
               Purchase this!
             </button>

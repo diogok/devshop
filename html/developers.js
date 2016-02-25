@@ -5,7 +5,6 @@ function vue_developers() {
       ,methods: {
         search: function() {
           loading();
-          event.preventDefault();
           var that=this;
           superagent
             .get('/developers?page='+this.page+'&query='+encodeURIComponent(this.query))
@@ -23,13 +22,11 @@ function vue_developers() {
             });
         }
         ,next: function(){
-          event.preventDefault();
           this.hasPrev=true;
           this.page++;
           this.search();
         }
         ,prev: function() {
-          event.preventDefault();
           if(this.page > 1) {
             this.hasNext=true;
             this.page--;
@@ -37,7 +34,6 @@ function vue_developers() {
           }
         }
         ,add: function(login,cost,id) {
-          event.preventDefault();
           loading();
           console.log(login,cost,id);
           superagent
